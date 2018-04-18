@@ -25,18 +25,14 @@ class Indexweb extends Controller
 		$limit = 10 ; 
 		$offset = 0;
 		$result = array();
+		$typeInfo = array();
 		$lunTanContentModel = new \app\luntan\model\LuntanContent();
 		$lunTanTypeModel = new \app\luntan\model\LuntanType();
 		$luntanLebalModel = new \app\luntan\model\LuntanLebal();
 		$where = array('is_show'=>1,'is_del'=>0);
-		//获取分类：
-		$typeTitle = $lunTanTypeModel->where($where)->field('content')->select();
-		$typeInfo = array();
-		foreach ($typeTitle as $typeRow){
-		    $typeRow = $typeRow->toArray();
-		    $typeInfo[] =$typeRow['content'];
-		}
+
         
+		$typeInfo = $lunTanTypeModel->getTpyes();
 		$lunTanContentRows = $lunTanContentModel->where($where);
 		if(empty($_POST['offset']) == false){
             $offset = $_POST['offset'];
@@ -192,68 +188,86 @@ class Indexweb extends Controller
 	/**
 	*测试
 	*
-	*/
-	public function test($i){
-		header("Content-Type:text/html;charset=UTF-8");
-		date_default_timezone_set("PRC");
-		$showapi_appid = '60425';  //替换此值,在官网的"我的应用"中找到相关值
-		$showapi_secret = '666af33288834051894bfd30cdf8c2c5';  //替换此值,在官网的"我的应用"中找到相关值
-		$data = array();
-		$luntanJokeModel = new \app\luntan\model\LuntanJoke();
-			$paramArr = array(
-			'showapi_appid'=> $showapi_appid,
-				'page'=> $i,
-				'maxResult'=> "50"
-			//添加其他参数
-			);
+// 	*/
+// 	public function test($i){
+// 		header("Content-Type:text/html;charset=UTF-8");
+// 		date_default_timezone_set("PRC");
+// 		$showapi_appid = '60425';  //替换此值,在官网的"我的应用"中找到相关值
+// 		$showapi_secret = '666af33288834051894bfd30cdf8c2c5';  //替换此值,在官网的"我的应用"中找到相关值
+// 		$data = array();
+// 		$luntanJokeModel = new \app\luntan\model\LuntanJoke();
+// 			$paramArr = array(
+// 			'showapi_appid'=> $showapi_appid,
+// 				'page'=> $i,
+// 				'maxResult'=> "50"
+// 			//添加其他参数
+// 			);
 
-			//创建参数(包括签名的处理)
-			function createParam ($paramArr,$showapi_secret) {
+// 			//创建参数(包括签名的处理)
+// 			function createParam ($paramArr,$showapi_secret) {
 				
-			$paraStr = "";
-			$signStr = "";
-			ksort($paramArr);
-			foreach ($paramArr as $key => $val) {
-				if ($key != '' && $val != '') {
-				$signStr .= $key.$val;
-				$paraStr .= $key.'='.urlencode($val).'&';
-					}
-			}
-			$signStr .= $showapi_secret;//排好序的参数加上secret,进行md5
-			$sign = strtolower(md5($signStr));
-			$paraStr .= 'showapi_sign='.$sign;//将md5后的值作为参数,便于服务器的效验
-			return $paraStr;
-			}
+// 			$paraStr = "";
+// 			$signStr = "";
+// 			ksort($paramArr);
+// 			foreach ($paramArr as $key => $val) {
+// 				if ($key != '' && $val != '') {
+// 				$signStr .= $key.$val;
+// 				$paraStr .= $key.'='.urlencode($val).'&';
+// 					}
+// 			}
+// 			$signStr .= $showapi_secret;//排好序的参数加上secret,进行md5
+// 			$sign = strtolower(md5($signStr));
+// 			$paraStr .= 'showapi_sign='.$sign;//将md5后的值作为参数,便于服务器的效验
+// 			return $paraStr;
+// 			}
 
-			$param = createParam($paramArr,$showapi_secret);
-			$url = 'http://route.showapi.com/341-1?'.$param;
+// 			$param = createParam($paramArr,$showapi_secret);
+// 			$url = 'http://route.showapi.com/341-1?'.$param;
 
-			$result = file_get_contents($url);
-			$result = (array)((array)((array)json_decode($result))['showapi_res_body'])['contentlist'];
-			foreach($result as $row){
-				$row = (array)$row;
-				if(is_array($row)){
-					$data = array(
-						'title' => $row['title'],
-						'content' => $row['text'],
-						'create_time' => $row['ct'],
-					);
-					$outcome = $luntanJokeModel->create($data);
-					$outcome = $outcome->toArray();
-				}
-				if(empty($outcome)){
-					return;
-				}
-			}
+// 			$result = file_get_contents($url);
+// 			$result = (array)((array)((array)json_decode($result))['showapi_res_body'])['contentlist'];
+// 			foreach($result as $row){
+// 				$row = (array)$row;
+// 				if(is_array($row)){
+// 					$data = array(
+// 						'title' => $row['title'],
+// 						'content' => $row['text'],
+// 						'create_time' => $row['ct'],
+// 					);
+// 					$outcome = $luntanJokeModel->create($data);
+// 					$outcome = $outcome->toArray();
+// 				}
+// 				if(empty($outcome)){
+// 					return;
+// 				}
+// 			}
 																					
-	}
+// 	}
 	
 	public function testaction(){
 		
         $lunTanContentModel = new \app\luntan\model\LuntanContent();
 	    $redis = $lunTanContentModel->iniRedis();
-		$a = $redis->set('myname','ikodota'); 
-		var_dump($a);
+	    $info = array(
+	        'code' => 1, 
+	        'msg' => 'SUCCESS',
+	        'data' => array(
+	               'name' => 'haiyang',
+	               'age' => '22',
+	               'sex' => '男',
+	               'phone' => '13512169551',
+	        )
+	    );
+	    
+	    $result = json_encode($info);
+	    
+		$a = $redis->set('myname',$result); 
 		
+	}
+	public function test(){
+	    $luntanModel = new \app\luntan\model\LuntanType();
+	    $row = $luntanModel->getTpye();
+	    var_dump($row);
+	    
 	}
 } 

@@ -196,4 +196,71 @@ class BlogArctic extends Controller
         }
         return $returnArray;
     }
+    
+    public function bloglist(){
+        $returnArray = array();
+        $lebalInfo = array();
+        $info = array();
+        $indexModel = new \app\luntan\model\Index();
+        $lunTanTypeModel = new \app\luntan\model\LuntanType();
+       	$typeInfo = $lunTanTypeModel->getTpyes();
+        $limit = isset($_POST['limit']) ? $_POST['limit'] : 10;
+        $offset = isset($_POST['offset']) ? $_POST['offset'] : 0;
+        if(!empty($_GET['typeid'])){
+            $typeTitle = $lunTanTypeModel->getTpye($_GET['typeid']);
+            $where = array('is_del'=>0,'is_show'=>1,'type_id'=>$_GET['typeid']);
+            $luntanContentModel = new \app\luntan\model\LuntanContent();
+            $blogRows = $luntanContentModel->where($where)->limit($offset,$limit)->field('id,abstract,img_id,title_simple,title,label_id,cre_time,browse')->select();
+            if($blogRows){
+                foreach ($blogRows as $blogRow){
+                    $blogRow = $blogRow->toArray();
+                    if($blogRow['img_id']){
+                        $imageModel = new \app\luntan\model\ImageRecord();
+                        $imgRow = $imageModel->field('path')->where(array('id'=>$blogRow['img_id']))->select();
+                        if($imgRow){
+                            $imgRow =  $imgRow[0]->toArray();
+                            $blogRow['path'] = $imgRow['path'];
+                            $blogRow['typeTitle'] = $typeTitle;
+                            
+                        }
+                    }
+                    if($blogRow['label_id']){ 
+                        $lebalModel = new \app\luntan\model\LuntanLebal();
+                        $labelRows = explode(',', $blogRow['label_id']);
+                        foreach ($labelRows as $key => $value ){
+                            $labelRow = $lebalModel->get(array('id'=>$value));
+                            $labelContent = $labelRow->toArray();
+                            $lebalInfo[] = $labelContent['content'];
+                         }
+                    }
+                    
+                    $blogRow['lebalInfo'] = $lebalInfo;
+                    $info[] = $blogRow;
+                }
+            }
+            if($info){
+                $returnArray = array(
+                    'code' => 1,
+                    'mgs' => $indexModel::ERROR_CODE[1],
+                    'data' => $info
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 100002,
+                    'mgs' => $indexModel::ERROR_CODE[100002],
+                    'data' => array()
+                );
+            }
+        }else{
+            $returnArray = array(
+             'code' => 100001,
+             'mgs' => $indexModel::ERROR_CODE[100001],
+             'data' => array()
+            );
+        }
+
+        $this->assign('contentRow',$returnArray);
+		$this->assign('typeRow',$typeInfo);
+        return $this->fetch('blog_list');
+    } 
 } 

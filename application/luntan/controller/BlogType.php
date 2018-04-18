@@ -13,7 +13,7 @@ class BlogType extends Controller
 
 
     public function addTypeAction()
-    {
+    { 
         $returnArray = array();
         $LuntanTypeModel =new \app\luntan\model\LuntanType();
         if(!empty($_POST)){
@@ -32,7 +32,7 @@ class BlogType extends Controller
                     'code' => 0,
                     'info' => '类型必须写'
                 );
-            }
+            }D:\xamp\htdocs\wqzbxh\.project
             $data['create_time'] = date('Y-m-d H:i:s');
             if(empty($returnArray)){
                 $result = $LuntanTypeModel->create($data);

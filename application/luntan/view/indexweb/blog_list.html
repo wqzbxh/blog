@@ -13,6 +13,12 @@
     <div class="b_2">个人博客网站</div>
   </div>
   <script type="text/javascript">
+	$(document).ready(function(){
+	  $(".b_1_1_1").click(function(){
+		alert(11);
+	  $(".b_1_1_2").slideToggle(200);
+	  });
+	});
 </script> 
 </div>
  
@@ -25,7 +31,7 @@
          <div class="content">
 		      <div class="list">
 			        <ul>
-					       <?php 
+					      <?php 
 					       if(!empty($contentRow)){	
 					       		foreach($contentRow as $row){?>
 						    				<li>
@@ -77,6 +83,11 @@
 <div id="gotop-fixed"> <a id="callme" href=""><i class="fa fa-qq"></i>
   <p>在线咨询</p>
   </a> <a id="gotop" href="javascript:;"><i class="fa fa-angle-up"></i></a></div>
-
+<script type="text/javascript">
+$('#gotop').click(function(){
+		$("html, body").animate({ scrollTop: 0 }, 800);
+		return false;
+	});
+</script>
 </body>
 </html><!--27.14 ms , 8 query , 2120kb memory , 0 error-->

@@ -20,13 +20,28 @@ class LuntanType extends Model
     //模糊查询字段
     public $fuzzy_query = 'content';
     
-    
-    
     /**
-     * checkLogin 检测当前用户是否登录
-     * @param void
-     * $return bool 是否登录
+     * 获取博客分类
      */
+    public function getTpyes(){
+        $where = array('is_show'=>1,'is_del'=>0);
+        $typeTitle = self::where($where)->select();
+        $typeInfo = array();
+        foreach ($typeTitle as $typeRow){
+            $typeRow = $typeRow->toArray();
+            $typeInfo[$typeRow['id']] = $typeRow['content'];
+        }
+        return $typeInfo;
+    }
 
+
+    public function getTpye($num){
+        $typeTitle = self::where(array('id'=>$num))->select();
+        $typeContent= array();
+        foreach ($typeTitle as $typeRow){
+            $typeContent = $typeRow['content'];
+        }
+        return $typeContent;
+    }
     
 }
