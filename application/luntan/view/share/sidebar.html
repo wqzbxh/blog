@@ -1,0 +1,49 @@
+
+
+<div class="widget">   <h3>网站分类</h3>
+        <ul id="divCatalog">
+  
+				<?php 
+			       if(!empty($typeRow)){
+					       		foreach($typeRow as $key =>$value){  ?>
+			       			 <li><a href=""><?php if($value){ echo $value ;}?></a></li>
+					<?php 	}  }?>   
+  </ul>
+   </div>
+
+<div class="widget">   <h3>控制面板</h3>
+      <div id="divContorPanel"><span class="cp-hello">您好，欢迎到访网站！</span><br/><span class="cp-login"><a href="{:url('login/login')}">登录后台</a></span>&nbsp;&nbsp;<span class="cp-vrs"><a href="http://www.hkly.net/zb_system/cmd.php?act=misc&amp;type=vrs">查看权限</a></span></div>
+     </div>
+
+<div class="widget">   <h3>搜索</h3>
+      <div id="divSearchPanel"><form name="search" method="post" action=""><input type="text" name="q" size="11" /> <input type="submit" value="搜索" /></form></div>
+     </div>
+
+<div class="widget">   <h3>最新留言</h3>
+        <ul id="divComments">
+        	<li><span>功能暂不开放<i></i></span></li>
+<!--     <li><a href="http://www.hkly.net/post/87.html#div-comment-17" title="查看《sigma适马35mm 1.4 ART样片评测》上的评论"> <span>美女图片<i></i></span>金属材质，做工不错，拍出的片子也很细腻。</a></li><li><a href=" #div-comment-16" title="查看《uhababy婴儿车》上的评论"> <span>rushmyessay.cn<i></i></span>支持楼主，赞赞。</a></li><li><a href="http://www.hkly.net/post/102.html#div-comment-15" title="查看《乐淘水净水器》上的评论"> <span>代写essay<i></i></span>感谢楼主的分析</a></li><li><a href="http://www.hkly.net/2.html#div-comment-14" title="查看《留言本》上的评论"> <span>烦烦烦<i></i></span>咯哈哈哈</a></li><li><a href="http://www.hkly.net/2.html#div-comment-13" title="查看《留言本》上的评论"> <span>个人博客<i></i></span>进啦看看</a></li> -->
+      </ul>
+   </div>
+
+<div class="widget">   <h3>热门文章</h3>
+        <ul id="divHotprevious">
+        <?php 
+			       if(!empty($hotInfo)){
+					       		foreach($hotInfo as $row){ ?>
+			       			 <li><a href="http://www.hkly.net/post/14.html" title="<?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?>"><?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?> </a>
+							<p><span><i class="fa fa-bars"></i><?php if(isset($row['typeTitle'])){ echo $row['typeTitle'] ;}?></span><span><i class="fa fa-eye"></i><?php if(isset($row['browse'])){ echo $row['browse'] ;}?></span></p></li>
+		<?php 	}  }?>    </ul>
+   </div>
+
+<div class="widget">   <h3>标签列表</h3>
+        <ul id="divTags">
+        <?php 
+        	if(!empty($lebalRow)){
+				foreach($lebalRow as $key=>$value){?>
+						<li><a href="http://www.hkly.net/tags-1.html"><?php if(!empty($value)){echo $value;}?><span class="tag-count"> (3)</span></a></li>
+				<?php }
+			}
+        ?>
+  </ul>
+   </div>
