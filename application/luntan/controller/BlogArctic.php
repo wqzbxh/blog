@@ -8,7 +8,7 @@ class BlogArctic extends Controller
 	//初始化函数
 	public function _initialize()
     {
-        parent::_initialize();
+        
     }
 
     /*
