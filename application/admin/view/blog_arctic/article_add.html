@@ -10,8 +10,26 @@
 	var app = angular.module('blog_add',[]);
 	app.controller('imageUrl',function($scope,$http){
 		$scope.a = 12;console.log('测试');
-		function getImagePath(){
-		console.log('测试post');
+		$scope.getImagePath = function(){
+			$http({
+				  method:'POST',
+				  url: "{url('image_manage/upImageTemp')}",
+				  headers: { 'Content-Type': undefined },
+				  data: {
+				    filename:document.getElementsById('filePicker').files,
+				  },
+				  transformRequest: (data, headersGetter) => {
+				    let formData = new FormData();
+				    angular.forEach(data, function (value, key) {
+				      formData.append(key, value);
+				    });
+				    return formData;
+		   		}
+			})
+// 			console.log('测试post');
+		}
+// 		function getImagePath(){
+// 		console.log('测试post');
 // 		console.log(document.getElementsById('filePicker').files);
 // 		$http({
 // 			  method:'POST',
@@ -28,7 +46,7 @@
 // 			    return formData;
 // 			   }
 // 			})
-		}
+// 		}
 	});
 </script>
 </head>
