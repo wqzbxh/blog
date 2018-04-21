@@ -1,5 +1,5 @@
 <?php 
-namespace app\luntan\model;
+namespace app\admin\model;
 use think\Model;
 
 /**
@@ -23,7 +23,35 @@ class ImageRecord extends Model
         return $this->key . time() . rand(10000000,99999999);
     }
     
-    /*
+    private function getLetter(){
+        $letterCode = '';
+        for($i=1;$i<=4;$i++){
+            $letterCode .= chr(rand(97,122));
+        }
+        return $letterCode;
+    }
+
+
+    /**
+     * 检查目录是否可写
+     * @param  string   $path    目录
+     * @return boolean
+     */
+    protected function checkPath($path)
+    {
+        if (is_dir($path)) {
+            return true;
+        }
+    
+        if (mkdir($path, 0755, true)) {
+            return true;
+        } else {
+            $this->error = "目录 {$path} 创建失败！";
+            return false;
+        }
+    }
+    
+    /**
      * 添加图片记录到数据库
      */
     
@@ -121,4 +149,41 @@ class ImageRecord extends Model
         }
     }
     
+    
+    /**
+     * 上传临时图片到服务器
+     */
+    public function upImageTemp(){
+        $imageArray = array();
+        $letterCode = self::getLetter();
+        $indexModel = new \app\admin\model\Index();
+        if(!empty($_FILES) || is_array($_FILES)  || $_FILES['size'] > 0){
+            $filePath = 'public' . DS . 'luntan' . DS . 'imageTemp' .date('-m-d') .DS ;
+            self::checkPath($filePath);
+            if($_FILES['file']['type'] == 'image/jpeg' ||  $_FILES['file']['type'] == 'image/gif' || $_FILES['file']['type'] == 'image/bmp' || $_FILES['file']['type'] == 'image/png'){
+                $imageMoveResult = move_uploaded_file($_FILES['file']['tmp_name'], $filePath.$letterCode.$_FILES['file']['name']);  
+            }
+            if($imageMoveResult){
+                $imageArray = array(
+                    'code' => 1,
+                    'msg' => $indexModel::ERROR_CODE[1],
+                    'data' =>  $filePath.$letterCode.$_FILES['file']['name']
+                );
+            }else{
+                $imageArray = array(
+                    'code' => 800001,
+                    'msg' => $indexModel::ERROR_CODE[800001],
+                    'data' => array()
+                );
+            }
+        }else{
+            $imageArray = array(
+                'code' => 800002,
+                'msg' => $indexModel::ERROR_CODE[800002],
+                'data' => array()
+            );
+        }
+        
+        return $imageArray;
+    }
 }

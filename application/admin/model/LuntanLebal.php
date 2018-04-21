@@ -1,5 +1,5 @@
 <?php 
-namespace app\luntan\model;
+namespace app\admin\model;
 use think\Model;
 
 /**
@@ -9,12 +9,12 @@ use think\Model;
  * @version 1.0
  */
 
-class LuntanJoke extends Model
+class LuntanLebal extends Model
 {
+    //模糊查询字段
+    public $fuzzy_query = '';
     
-    /*
-     *截取字符串
-     */
+    
     
 
 }

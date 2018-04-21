@@ -1,0 +1,57 @@
+<script>
+	$(function(){
+		$('.addTypeAction').on('click',function(){
+			var blog_type_name = $(" input[ name='blog_type_name' ] ").val();
+			var remarks = $(" input[ name='remarks' ] ").val();
+			if(blog_type_name){
+				$.post("{:url('BlogType/checkedType')}",{'blog_type_name':blog_type_name},function(data){
+					if(data['code'] == 1){
+						$.post("{:url('BlogType/addTypeAction')}",{'blog_type_name':blog_type_name,'remarks':remarks},function(data){
+							if(data['code'] == 1){
+								alert(data['info']);
+							}else{
+								alert(data['info']);
+							}
+						})
+					}else{
+						alert(data['info']);
+					}				
+				})			
+			}
+
+		})
+		//博客内容提交 
+		//option:selected
+		$(function(){
+			$(".blog_Btn").on("click",function(){
+			var ue = UE.getEditor('editor');
+			var checked = [];
+			$(" input[ name = 'is_comment']:checked ").each(function(){
+				checked.push($(this).val())
+			});
+			var content=ue.getPlainTxt();
+			var selectType = $(".select option:selected").val();
+			var sort = $(" input[ name='sort' ] ").val();
+			var img = $(" input[ name='img' ] ").val();
+			alert(img);
+			var abstractContent = $(" .abstractContent ").val();
+			var author = $(" input[ name='author' ] ").val();
+			var source = $(" input[ name='source' ] ").val();
+			var keywords = $(" input[ name='keywords' ] ").val();
+			var is_comment = checked;
+			var title_simple = $(" input[ name='title_simple' ] ").val();
+			var title = $(" input[ name='title' ] ").val();
+			$.post("{:url('BlogType/addBlogAction')}",{'selectType':selectType,'content':content,'sort':sort,'abstractContent':abstractContent,'author':author,'source':source,'keywords':keywords,'is_comment':is_comment,'title_simple':title_simple,'title':title},function(data)
+				{
+				if(data['code'] == 1){
+					alert(data['info']);
+					$(location).attr('href', '{:url("index/articlelist")}');
+				}else{
+					alert(data['info']);
+				}
+					
+				});
+			});
+		})
+	})
+</script>			

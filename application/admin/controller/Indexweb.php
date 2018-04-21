@@ -4,7 +4,7 @@ use think\Controller;
 
 /**
  * 
- * @author ZhuYong
+ * @author wanghaiyang
  *
  *
  */
@@ -26,9 +26,9 @@ class Indexweb extends Controller
 		$offset = 0;
 		$result = array();
 		$typeInfo = array();
-		$lunTanContentModel = new \app\admin\model\LuntanContent();
-		$lunTanTypeModel = new \app\admin\model\LuntanType();
-		$luntanLebalModel = new \app\admin\model\LuntanLebal();
+		$lunTanContentModel = new \app\luntan\model\LuntanContent();
+		$lunTanTypeModel = new \app\luntan\model\LuntanType();
+		$luntanLebalModel = new \app\luntan\model\LuntanLebal();
 		$where = array('is_show'=>1,'is_del'=>0);
 
         
@@ -57,7 +57,7 @@ class Indexweb extends Controller
 					
 				}	
 				if($contentRow['img_id']){
-				    $imageModel = new \app\admin\model\ImageRecord();
+				    $imageModel = new \app\luntan\model\ImageRecord();
 				    $imgRow = $imageModel->get(array('id'=>$contentRow['img_id']));
 				    if($imgRow){
 				       $imgRow =  $imgRow->toArray();
@@ -82,7 +82,7 @@ class Indexweb extends Controller
 		        }
 		    }
 		}
-	   $luntanLebalModel = new \app\admin\model\LuntanLebal();
+	   $luntanLebalModel = new \app\luntan\model\LuntanLebal();
 	   $luntanLebalRows = $luntanLebalModel->select();
 	   $lebalArray = array();
 	   if($luntanLebalRows){
@@ -127,10 +127,10 @@ class Indexweb extends Controller
             );
         }
         
-        $ImageRecordModel = new \app\admin\model\ImageRecord();
-        $lunTanContentModel = new \app\admin\model\LuntanContent();
-        $lunTanTypeModel = new \app\admin\model\LuntanType();
-        $labelModel = new \app\admin\model\LuntanLebal();
+        $ImageRecordModel = new \app\luntan\model\ImageRecord();
+        $lunTanContentModel = new \app\luntan\model\LuntanContent();
+        $lunTanTypeModel = new \app\luntan\model\LuntanType();
+        $labelModel = new \app\luntan\model\LuntanLebal();
         
         $where = array('is_show'=>1,'is_del'=>0);
         //获取分类：
@@ -246,7 +246,7 @@ class Indexweb extends Controller
 	
 	public function testaction(){
 		
-        $lunTanContentModel = new \app\admin\model\LuntanContent();
+        $lunTanContentModel = new \app\luntan\model\LuntanContent();
 	    $redis = $lunTanContentModel->iniRedis();
 	    $info = array(
 	        'code' => 1, 
@@ -265,7 +265,7 @@ class Indexweb extends Controller
 		
 	}
 	public function test(){
-	    $luntanModel = new \app\admin\model\LuntanType();
+	    $luntanModel = new \app\luntan\model\LuntanType();
 	    $row = $luntanModel->getTpye();
 	    var_dump($row);
 	    

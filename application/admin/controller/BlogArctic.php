@@ -1,5 +1,5 @@
 <?php
-namespace app\luntan\controller;
+namespace app\admin\controller;
 use think\Controller;
 
 class BlogArctic extends Controller
@@ -11,6 +11,60 @@ class BlogArctic extends Controller
         
     }
 
+    
+    public function article_add(){
+        $blogTypeModel = new \app\admin\model\LuntanType();
+        $blogTypeRows = $blogTypeModel->getTpyes();
+        $this->assign('blogType',$blogTypeRows);
+        return $this->fetch('article_add');
+    } 
+    
+    /**
+     * 获取博客文章列表
+     */
+
+    public function articleList(){
+        $returnArray = array();
+        $lunTanContentModel = new \app\admin\model\LuntanContent();
+        $blogTypeModel = new \app\admin\model\LuntanType();
+        $luntanContentRows = $lunTanContentModel->where(array('is_del'=>0))->select();
+        $info = array();
+        if(!empty($luntanContentRows)){
+            foreach($luntanContentRows as $row){
+                if($row['type_id']){
+                    $typeRow = $blogTypeModel->get(array('id'=>$row['type_id']));
+                    $typeRow = $typeRow->toArray();
+                }
+                $info[] = array(
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'title_simple' => $row['title_simple'],
+                    'source' => $row['source'],
+                    'creTime' => $row['cre_time'],
+                    'browse' => $row['browse'],
+                    'isShow' => $row['is_show'],
+                    'typeContent' => $typeRow['content'],
+                );
+            }
+            if($info){
+                $returnArray = array(
+                    'code' => 1 ,
+                    'info' => '获取列表'
+                );
+            }else{
+                $returnArray = array(
+                    'code' => 0,
+                    'info' => '获取失败'
+                );
+            }
+        }
+        
+        $this->assign('contentList',$info);
+        return $this->fetch('article_list');
+    }
+    
+    
+    
     /*
      * 添加博文
      */
@@ -81,7 +135,7 @@ class BlogArctic extends Controller
             }
              
             if(empty($_FILES['img']) == false){
-                $imageModel = new \app\luntan\model\ImageRecord();
+                $imageModel = new \app\admin\model\ImageRecord();
                 $imgRecod = $imageModel ->uploadImageAction($_FILES['img']);
                 if($imgRecod['info']){
                     $data['img_id'] = $imgRecod['info'];
@@ -94,7 +148,7 @@ class BlogArctic extends Controller
             }
             $data['cre_time'] =  date('Y-m-d H:i:s');
             if(empty($returnArray)){
-                $LuntanContentModel = new \app\luntan\model\LuntanContent();
+                $LuntanContentModel = new \app\admin\model\LuntanContent();
                 $lunTanContentRow = $LuntanContentModel->create($data);
                 if($lunTanContentRow){
                     $lunTanContentRow = $lunTanContentRow->toArray();
@@ -128,7 +182,7 @@ class BlogArctic extends Controller
         if($_POST['labelTag']){
             $data['content'] = $_POST['labelTag'];
             $data['cre_time'] = date('Y-m-d  H:i:s');
-            $lebalModel = new \app\luntan\model\LuntanLebal();
+            $lebalModel = new \app\admin\model\LuntanLebal();
             $existRow = $lebalModel->get(array('content'=>$_POST['labelTag']));
             if($existRow ){
                 $lebalRow = $existRow ->toArray();

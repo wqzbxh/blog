@@ -1,0 +1,34 @@
+﻿
+<body>
+<div id="m-nav" class="m-nav">
+  <ul>
+      <li id="nvabar-item-index"><a href="">首页</a></li><li id="navbar-category-1"><a href="">互联网</a></li><li id="navbar-category-2"><a href="">好货推荐</a></li><li id="navbar-category-3"><a href="">技术宅</a></li><li id="navbar-category-4"><a href="">数码</a></li><li id="navbar-category-7"><a href="">游记</a></li><li id="navbar-category-8"><a href="">心情随笔</a></li><li id="navbar-page-2"><a href="">留言本</a></li>  </ul>
+</div>
+<div class="header" id="head">
+  <div class="topbar">
+    <div class="container">
+      <ul>
+        <a href="">关于我</a>       </ul>
+      欢迎访问海海博客 </div>
+    <div id="loading"></div>
+  </div>
+  <div class="container">
+	    <div class="logo"> <a href="" title="海海博客&#10;原创独立个人博客网站">海海博客</a> </div>
+	    <div class="nav">
+	    <a id="m-nav-link" href="#m-nav"><i class="fa fa-navicon (alias)"></i>分类</a> 
+	      <ul class="nav-list">
+		       <li id="nvabar-item-index"><a href="/">首页</a></li>
+		      	<?php  if(!empty($typeRow)){foreach($typeRow as $key =>$value){?> <li><a href="{:url('blog_arctic/blogList')}?typeid=<?php echo $key?>"><?php if($value){ echo $value ;}?></a></li><?php 	}  }?>   
+	   	  </ul>
+	    </div>
+	    
+	    
+	    <div class="search">
+	      <form name="search" method="post"  action="">
+	        <input type="text" name="q" class="search-input" id="edtSearch" placeholder="Search">
+	        <button class="btn_search">搜索</button>
+	      </form>
+	    </div>
+  </div>
+</div>
+

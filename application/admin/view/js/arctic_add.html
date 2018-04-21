@@ -1,0 +1,44 @@
+<script>
+		var labelTagInfo = [];
+		var lebalId = [];
+		$(function(){
+			$('.tag').on('click',function(){
+				var existTag = true;
+				var labelTag = $(" input[ name='labelTag' ] ").val();
+				for(i=0;i<labelTagInfo.length;i++){
+					if(labelTag == labelTagInfo[i]){
+						existTag = false;
+					}
+				}
+				if(labelTag && existTag == true){
+					$.post("{:url('BlogArctic/labelTagAction')}",{'labelTag':labelTag},function(data){
+						labelTagInfo.push ( data['data']['labelTag']);
+						lebalId.push (data['data']['id']);
+						if(data['code']=1){
+							$('.labelJquery').append('<input class="btn" id="labelTagInfo" style="border-radius:5px;" name="'+data['data']['id']+'" type="button" value="'+data['data']['labelTag']+'"/>');
+							$('.lebalId').html('<input type="text" class="input-text" value="'+lebalId+'" placeholder="" id="allLabelTag" name="allLabelTag">');
+						}
+					})			
+				}else{
+					alert('标签已存在！');
+				}
+			})
+			
+			$(document).on("click", "#labelTagInfo",function(){
+					var inputLabelTagString, LabelTagString;
+					var _this = $(this);
+				    var delLebalId = _this.attr("name");
+				    var delLebalName = _this.attr("value");
+					var allLabelTag = $(" input[ name='allLabelTag' ] ").val();
+					var LabelTagArray = allLabelTag.split(',');
+					LabelTagArray.splice($.inArray(delLebalId,LabelTagArray),1);
+					labelTagInfo.splice($.inArray(delLebalName,labelTagInfo),1);
+					inputLabelTagString = LabelTagArray;
+					LabelTagString = inputLabelTagString.join(",");
+					$('.lebalId').html('<input type="text" class="input-text" value="'+LabelTagString+'" placeholder="" id="allLabelTag" name="allLabelTag">');
+					_this.remove();
+			});
+		})
+
+</script>		
+

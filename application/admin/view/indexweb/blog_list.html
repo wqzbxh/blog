@@ -1,0 +1,93 @@
+﻿
+ {include file="share/header_web"}
+ {include file="indexweb/nav"}
+<div class="banner">
+  <div class="container">
+    <div class="b_1">
+      <h2>海海博客</h2>
+      <div class="b_1_1"> <a href="javascript:;" class="b_1_1_1" >+关注</a>&nbsp&nbsp&nbsp&nbsp<a href="{:url('indexweb/mylocaltion')}" class="b_1_1_1"  style="color:red">我的位置</a>
+        <div class="b_1_1_2"> <a href="https://weibo.com/u/6395237606"><i class="fa fa-weibo"></i>新浪微博</a>
+		<a href=""><i class="fa fa-tencent-weibo"></i>腾讯微博</a> </div>
+      </div>
+    </div>
+    <div class="b_2">个人博客网站</div>
+  </div>
+  <script type="text/javascript">
+	$(document).ready(function(){
+	  $(".b_1_1_1").click(function(){
+		alert(11);
+	  $(".b_1_1_2").slideToggle(200);
+	  });
+	});
+</script> 
+</div>
+ 
+<div class="container">
+  <div class="content-wrap"> 
+          
+<div class="toplist">
+  	<ul>  </ul>
+</div>
+         <div class="content">
+		      <div class="list">
+			        <ul>
+					      <?php 
+					       if(!empty($contentRow)){	
+					       		foreach($contentRow as $row){?>
+						    				<li>
+												 <a href="{:url('indexweb/arctic')}?id=<?php echo $row['id'] ;?>" title="" class="thumbnail"><img src="<?php if($row['path']){ echo $row['path'] ;}?>" alt=""></a> <div class="list-content">     <h2 class="list-title"><a href="{:url('indexweb/arctic')}?id=<?php echo $row['id'] ;?>" title=""><?php if($row['title']){ echo $row['title'] ;}?></a></h2> 
+											    <div class="list-meta">  
+											    <span class="time"><i class="fa fa-clock-o"></i><?php if($row['title']){ echo $row['cre_time'] ;}?></span> <span class="sort"><i class="fa fa-bars"></i><a href="" title="<?php if($row['typeTitle']){ echo $row['typeTitle'] ;}?>"><?php if($row['typeTitle']){ echo $row['typeTitle'] ;}?></a></span> <span class="readnum"><i class="fa fa-eye"></i><?php if(isset($row['browse'])){ echo $row['browse'] ;}?></span> <span class="comnum"><i class="fa fa-comments"></i><a href="#">4 条</a></span> </div>
+											    <div class="list-summary"><?php if($row['abstract']){ echo $row['abstract'] ;}?></div>
+											  </div>
+										</li>
+							<?php 	}  }?>   
+			                 </ul>
+		      </div>
+      
+		<div class="pagebar">
+				<!-- <a href="http://www.hkly.net/"><span class="page">‹‹</span></a> -->
+		    	<!-- <span class="page now-page">1</span> -->
+		    	<!-- <a href="http://www.hkly.net/page_2.html"><span class="page">2</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_3.html"><span class="page">3</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_4.html"><span class="page">4</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_5.html"><span class="page">5</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_6.html"><span class="page">6</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_7.html"><span class="page">7</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_8.html"><span class="page">8</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_2.html"><span class="page">›</span></a> -->
+		    	<!-- <a href="http://www.hkly.net/page_8.html"><span class="page">››</span></a> -->
+		  </div>
+	 </div>
+</div>
+  <div class="sidebar">
+  	 {include file="share/sidebar"}
+ </div>
+</div>
+
+<div class="link">
+  <div class="container">
+    <h3>友情链接：</h3>
+    <ul>
+    <li><a href="" target="_blank" title="个人博客">个人博客</a></li></ul>
+  </div>
+</div>
+<div class="footer">
+  <div class="container">
+    <div class="about">  </div>
+    <div class="copyright">    <p>豫ICP备18009049号-1  <a href="" target="_blank"></a><p>
+    </div>
+    <div class="for">欢迎访问海洋博客</div>
+  </div>
+</div>
+<div id="gotop-fixed"> <a id="callme" href=""><i class="fa fa-qq"></i>
+  <p>在线咨询</p>
+  </a> <a id="gotop" href="javascript:;"><i class="fa fa-angle-up"></i></a></div>
+<script type="text/javascript">
+$('#gotop').click(function(){
+		$("html, body").animate({ scrollTop: 0 }, 800);
+		return false;
+	});
+</script>
+</body>
+</html><!--27.14 ms , 8 query , 2120kb memory , 0 error-->

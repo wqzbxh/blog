@@ -1,5 +1,5 @@
 <?php 
-namespace app\luntan\model;
+namespace app\admin\model;
 use think\Model;
 
 /**
