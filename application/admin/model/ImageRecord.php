@@ -156,18 +156,20 @@ class ImageRecord extends Model
     public function upImageTemp(){
         $imageArray = array();
         $letterCode = self::getLetter();
+       $imageMoveResult = '';
         $indexModel = new \app\admin\model\Index();
         if(!empty($_FILES) || is_array($_FILES)  || $_FILES['size'] > 0){
-            $filePath = 'public' . DS . 'luntan' . DS . 'imageTemp' .date('-m-d') .DS ;
+            $filePath = 'public' . DS . 'luntan' . DS . 'imageTemp' .date('Y-m-d') .DS ;
             self::checkPath($filePath);
-            if($_FILES['file']['type'] == 'image/jpeg' ||  $_FILES['file']['type'] == 'image/gif' || $_FILES['file']['type'] == 'image/bmp' || $_FILES['file']['type'] == 'image/png'){
-                $imageMoveResult = move_uploaded_file($_FILES['file']['tmp_name'], $filePath.$letterCode.$_FILES['file']['name']);  
+            $fileRow =  reset($_FILES);
+            if($fileRow['type'] == 'image/jpeg' || $fileRow['type'] == 'image/gif' || $fileRow['type'] == 'image/bmp' || $fileRow['type'] == 'image/png'){
+                $imageMoveResult = move_uploaded_file($fileRow['tmp_name'], $filePath.$letterCode.$fileRow['name']);  
             }
             if($imageMoveResult){
                 $imageArray = array(
                     'code' => 1,
                     'msg' => $indexModel::ERROR_CODE[1],
-                    'data' =>  $filePath.$letterCode.$_FILES['file']['name']
+                    'data' =>  $filePath.$letterCode.$fileRow['name']
                 );
             }else{
                 $imageArray = array(

@@ -10,13 +10,15 @@
 	var app = angular.module('blog_add',[]);
 	app.controller('imageUrl',function($scope,$http){
 		$scope.a = 12;console.log('测试');
+		$scope.imgUrl = '';
 		$scope.getImagePath = function(){
+
 			$http({
 				  method:'POST',
-				  url: "{url('image_manage/upImageTemp')}",
+				  url: "/admin/image_manage/upImageTemp",
 				  headers: { 'Content-Type': undefined },
 				  data: {
-				    filename:document.getElementsById('filePicker').files,
+				    filename:document.querySelector('#filePicker').files[0],
 				  },
 				  transformRequest: (data, headersGetter) => {
 				    let formData = new FormData();
@@ -25,8 +27,11 @@
 				    });
 				    return formData;
 		   		}
+				  
+			}).then(function(res){
+					$scope.imgUrl = '..\\..\\' +  res.data.data;
+				console.log(  '..\\..\\' + res.data.data);
 			})
-// 			console.log('测试post');
 		}
 // 		function getImagePath(){
 // 		console.log('测试post');
@@ -144,13 +149,13 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">缩略图：	</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<div class="uploader-thum-container" ng-app="blog_add">
+				<div class="uploader-thum-container" ng-app="blog_add"  ng-controller="imageUrl">
 					<div id="fileList" class="uploader-list"></div>
-						<input type="file" class="input-text" value="0" placeholder="" id="filePicker" name="img" >
-				
-					<div ng-controller="imageUrl" >
-					{{a}}
-						<a  ng-click="getImagePath()" >测试</a>
+							<input type="file"  file-model="myFile"  class="input-text" value="0" placeholder="" id="filePicker" name="img"    onchange="angular.element(this).scope().getImagePath() "  ng-model="myValue" >
+			
+					<div >
+						 <img ng-src="{{imgUrl}}" style="width:100px;height:200px;">
+						
 					</div>
 				</div>
 			</div>
