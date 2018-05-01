@@ -317,4 +317,8 @@ class BlogArctic extends Controller
 		$this->assign('typeRow',$typeInfo);
         return $this->fetch('blog_list');
     } 
+    
+    /**
+     * tu'pia
+     */
 } 
