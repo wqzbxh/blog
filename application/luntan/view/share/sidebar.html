@@ -2,21 +2,21 @@
 
 <div class="widget">   <h3>网站分类</h3>
         <ul id="divCatalog">
-  
+
 				<?php 
 			       if(!empty($typeRow)){
 					       		foreach($typeRow as $key =>$value){  ?>
-			       			 <li><a href=""><?php if($value){ echo $value ;}?></a></li>
+			       			 <li><a href="{:url('blog_arctic/blogList')}?typeid=<?php echo $key?>"><?php if($value){ echo $value ;}?></a></li>
 					<?php 	}  }?>   
   </ul>
    </div>
 
 <div class="widget">   <h3>控制面板</h3>
-      <div id="divContorPanel"><span class="cp-hello">您好，欢迎到访网站！</span><br/><span class="cp-login"><a href="{:url('admin/login/login')}">登录后台</a></span>&nbsp;&nbsp;<span class="cp-vrs"><a href="">查看权限</a></span></div>
+      <div id="divContorPanel"><span class="cp-hello">您好，欢迎到访网站！</span><br/><span class="cp-login"><a href="{:url('admin/login/login')}">登录后台</a></span>&nbsp;&nbsp;</div>
      </div>
 
-<div class="widget">   <h3>搜索</h3>
-      <div id="divSearchPanel"><form name="search" method="post" action=""><input type="text" name="q" size="11" /> <input type="submit" value="搜索" /></form></div>
+<div class="widget">   <h3>备注</h3>
+      <div id="divSearchPanel"><form name="search" method="post" action=""><input type="text" name="q" size="11" /> <input type="submit" value="暂不支持" /></form></div>
      </div>
 
 <div class="widget">   <h3>最新留言</h3>
@@ -31,7 +31,7 @@
         <?php 
 			       if(!empty($hotInfo)){
 					       		foreach($hotInfo as $row){ ?>
-			       			 <li><a href="http://www.hkly.net/post/14.html" title="<?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?>"><?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?> </a>
+			       			 <li><a href="{:url('indexweb/arctic')}?id=<?php echo $row['id'] ;?>" title="<?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?>"><?php if(!empty($row['title_simple'])){ echo $row['title_simple'] ;}?> </a>
 							<p><span><i class="fa fa-bars"></i><?php if(isset($row['typeTitle'])){ echo $row['typeTitle'] ;}?></span><span><i class="fa fa-eye"></i><?php if(isset($row['browse'])){ echo $row['browse'] ;}?></span></p></li>
 		<?php 	}  }?>    </ul>
    </div>
@@ -40,8 +40,8 @@
         <ul id="divTags">
         <?php 
         	if(!empty($lebalRow)){
-				foreach($lebalRow as $key=>$value){?>
-						<li><a href="http://www.hkly.net/tags-1.html"><?php if(!empty($value)){echo $value;}?><span class="tag-count"> (3)</span></a></li>
+				foreach($lebalRow as $value){?>
+						<li><a href=""><?php if(!empty($value['name'])){echo $value['name'];}?><span class="tag-count">( <?php if(!empty($value['num'])){echo $value['num'];}?> )</span></a></li>
 				<?php }
 			}
         ?>

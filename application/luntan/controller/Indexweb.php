@@ -30,7 +30,7 @@ class Indexweb extends Controller
 		$lunTanTypeModel = new \app\admin\model\LuntanType();
 		$luntanLebalModel = new \app\admin\model\LuntanLebal();
 		$where = array('is_show'=>1,'is_del'=>0);
-
+        $search = $_POST['search'] ?? null;
         
 		$typeInfo = $lunTanTypeModel->getTpyes();
 		$lunTanContentRows = $lunTanContentModel->where($where);
@@ -40,15 +40,22 @@ class Indexweb extends Controller
         if(empty($_POST['limit']) == false){
             $limit = $_POST['limit'];
         }
+
 		$order = array('id' => 'desc');
 		$hotOrder = array('browse' => 'desc');
-		$lunTanContentRow = $lunTanContentRows->order($order)->limit($offset,$limit)->select();
+
+		if(!empty($search)){
+            $lunTanContentRow = $lunTanContentRows->order($order)->where($lunTanContentModel->fuzzy_field,'like','%'.$search.'%')->limit($offset,$limit)->select();
+        }else{
+            $lunTanContentRow = $lunTanContentRows->order($order)->limit($offset,$limit)->select();
+        }
+
 		//获取热门文章
 	   
 		$info = array();
 		if($lunTanContentRow){
 			foreach($lunTanContentRow as $contentRow){
-				$contentRow = $contentRow->toArray(); 
+				$contentRow = $contentRow->toArray();
 				if($contentRow['type_id']){
 					$rows = $lunTanTypeModel->get(array('id'=>$contentRow['type_id']));
 					$row = $rows->toArray();
@@ -69,32 +76,38 @@ class Indexweb extends Controller
 		}
 		
 		$hotContent = $lunTanContentRows-> order($hotOrder)->limit(5)->select();
+
 		$hotInfo = array();
 		if($hotContent){
 		    foreach($hotContent as $hotRow){
 		        $hotRow = $hotRow->toArray();
-		        if($hotRow['type_id']){
+		        if(!empty($hotRow['type_id'])){
 		            $hotTypeRows = $lunTanTypeModel->get(array('id'=>$hotRow['type_id']));
+
 		            $hotTypeRows = $hotTypeRows->toArray();
 		            $hotResult = $hotRow;
 		            $hotResult['typeTitle'] = $hotTypeRows['content'];
 		            $hotInfo[] = $hotResult;
 		        }
+
 		    }
 		}
 	   $luntanLebalModel = new \app\admin\model\LuntanLebal();
-	   $luntanLebalRows = $luntanLebalModel->select();
+	   $luntanLebalRows = $luntanLebalModel->where(array('is_show'=>1))->select();
 	   $lebalArray = array();
 	   if($luntanLebalRows){
 	       foreach ($luntanLebalRows as $LebalRows){
 	            $LebalRow = $LebalRows->toArray();
-	           $lebalArray[]=$LebalRows['content'];
+	           $lebalArrays['name'] = $LebalRows['content'];
+               $lebalArrays['num'] = $lunTanContentModel->where($lunTanContentModel->label_query,'like','%'.$LebalRows['id'].'%')->where(array('is_del'=>0,'is_show'=>1))->count();
+               $lebalArray[] =  $lebalArrays;
 	       }
 	   }
 		$this->assign('lebalRow',$lebalArray);
 		$this->assign('contentRow',$info);
 		$this->assign('typeRow',$typeInfo);
 		$this->assign('hotInfo',$hotInfo);
+
 		return $this->fetch('index');
     }
     

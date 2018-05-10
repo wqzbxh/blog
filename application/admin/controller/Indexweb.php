@@ -75,6 +75,7 @@ class Indexweb extends Controller
 		        $hotRow = $hotRow->toArray();
 		        if($hotRow['type_id']){
 		            $hotTypeRows = $lunTanTypeModel->get(array('id'=>$hotRow['type_id']));
+
 		            $hotTypeRows = $hotTypeRows->toArray();
 		            $hotResult = $hotRow;
 		            $hotResult['typeTitle'] = $hotTypeRows['content'];

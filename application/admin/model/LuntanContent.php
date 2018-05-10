@@ -25,10 +25,10 @@ class LuntanContent extends Model
     );    
     
     //模糊查询字段
-    public $fuzzy_query = 'content';
-    
-    
-    
+    public $label_query = 'label_id';
+
+    private $table_name = 'luntan_content';
+
     /**
      * checkLogin 检测当前用户是否登录
      * @param void
@@ -54,5 +54,7 @@ class LuntanContent extends Model
         
         return $redis;
     }
+
+    public $fuzzy_field = 'luntan_content.title';
     
 }
