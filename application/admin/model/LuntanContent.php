@@ -55,6 +55,29 @@ class LuntanContent extends Model
         return $redis;
     }
 
+
+
+    /**
+     * 实例化redis
+     *访问量
+     */
+    public function pvRedis()
+    {
+        $redisConfig =  config("redis");
+        if($redisConfig[setredis]){
+            $redis = array();
+            if(true){
+                $redis = new \Redis();
+                $redis->pconnect($redisConfig['host'], $redisConfig['port']);
+                $redis->auth($redisConfig['password']);
+                $redis->select(1);
+            }else{
+                return 'false';
+            }
+            return $redis;
+        }
+    }
+
     public $fuzzy_field = 'luntan_content.title';
     
 }

@@ -278,6 +278,10 @@ class Indexweb extends Controller
 		
 	}
 	public function test(){
+        $ip = $_SERVER["REMOTE_ADDR"];
+        $lunTanContentModel = new \app\admin\model\LuntanContent();
+	    $redis = $lunTanContentModel->pvRedis();
+
 	    $luntanModel = new \app\admin\model\LuntanType();
 	    $row = $luntanModel->getTpye();
 	    var_dump($row);
